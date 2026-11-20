@@ -72,11 +72,3 @@ pitch | gyroy | Vertical_out | Velocity_out | Target_Speed | Encoder_Left + Enco
 ```
 
 用 `HAL_UART_Transmit_IT` 非阻塞发送，`gState` 非空闲时直接丢帧，避免在中断里等待。
-
-## 已知限制
-
-- 控制节拍由「DMP 数据就绪中断（EXTI5）」改为「TIM3 定时中断 200 Hz」，并改为按 `pitch + gyroy` 做直立环，
-  这些改动**尚未上板复测**；定时器与 DMP 属两个时钟源，相位可能错开而读到旧帧
-- `Control()` 中仍调用一次 `mpu_dmp_get_data()`，若实测发现滞后，需要改成「FIFO 有新帧才解算」
-- 蓝牙遥控为单字节指令（前进 / 后退 / 左 / 右），无校验、无断连检测
-- 源码注释为 GBK 与 UTF-8 混用（历史文件是 GBK），编辑器显示乱码时请切换编码
